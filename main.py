@@ -42,11 +42,11 @@ def sp_test():
         time.sleep(5)
         data = html.fromstring(driver.page_source)
         txt = data.xpath(value_+'/text()')
-        print(txt[0])
+        #print(txt[0])
         popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
         if 'The target server is unreachable!' in popup_txt :
             srever_ = data.xpath(value_+'/text()')
-            print(srever_[0])
+            #print(srever_[0])
             line_notify('test fail' +srever_[0]) 
             continue
         time.sleep(5)
@@ -55,7 +55,7 @@ def sp_test():
         
         v4_data = data.xpath('//span[@id="jit__value--ipv4"]/text()')
         #v6_data = data.xpath('//span[@id="jit__value--ipv6"]/text()')
-        print(v4_data[0])
+        #print(v4_data[0])
         if '-' in v4_data[0]:
             srever_ = data.xpath(value_+'/text()')
             line_notify('test fail'+srever_[0])
