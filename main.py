@@ -14,10 +14,10 @@ def sp_test():
     
     #for Edge
     
-    #option = webdriver.EdgeOptions()
-    #option.add_argument("headless")
-    #driver = webdriver.Edge(options=option)
-    driver = webdriver.Edge()
+    option = webdriver.EdgeOptions()
+    option.add_argument("headless")
+    driver = webdriver.Edge(options=option)
+    #driver = webdriver.Edge()
     
     #for Firefox
     '''
@@ -31,7 +31,6 @@ def sp_test():
         time.sleep(5)
         select_server_btn = driver.find_element(by = By.XPATH , value="//div[@id='test__params']/ul/li/div[2]")
         select_server_btn.click()
-        
         value_ = '//div[@data-value="'+str(i)+'"]'
         
         select_server = driver.find_element(by = By.XPATH , value=value_)
@@ -49,7 +48,8 @@ def sp_test():
             srever_ = data.xpath(value_+'/text()')
             print(srever_[0])
             line_notify('test fail' +srever_[0]) 
-        time.sleep(20)
+            continue
+        time.sleep(5)
 
         data = html.fromstring(driver.page_source)
         
@@ -58,13 +58,13 @@ def sp_test():
         print(v4_data[0])
         if '-' in v4_data[0]:
             srever_ = data.xpath(value_+'/text()')
-            line_notify('test fail'+srever_)
+            line_notify('test fail'+srever_[0])
         #print(v6_data[0])
         
 
         
 def line_notify(text): 
-    config_file = open(r'C:\config_1.json','r',encoding='utf-8')
+    config_file = open(r'C:\config.json','r',encoding='utf-8')
     config_file = json.loads(config_file.read())
     token = config_file['token']
     headers = {
@@ -80,5 +80,10 @@ def line_notify(text):
 
 
 if __name__ == "__main__":
-    sp_test()
-    #line_notify('test')
+    try:
+        sp_test()
+        line_notify('測試完成')
+    except Exception as e:
+        line_notify(str(e)) 
+        
+ 
