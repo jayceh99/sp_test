@@ -14,10 +14,10 @@ def sp_test():
     
     #for Edge
     
-    option = webdriver.EdgeOptions()
-    option.add_argument("headless")
-    driver = webdriver.Edge(options=option)
-    #driver = webdriver.Edge()
+    #option = webdriver.EdgeOptions()
+    #option.add_argument("headless")
+    #driver = webdriver.Edge(options=option)
+    driver = webdriver.Edge()
     
     #for Firefox
     '''
@@ -25,40 +25,51 @@ def sp_test():
     option.add_argument("-headless")
     driver = webdriver.Firefox(options=option)
     '''
-    for i in range (0,23):
-    
-        driver.get('https://sp.tanet.edu.tw/')
-        time.sleep(5)
-        select_server_btn = driver.find_element(by = By.XPATH , value="//div[@id='test__params']/ul/li/div[2]")
-        select_server_btn.click()
-        value_ = '//div[@data-value="'+str(i)+'"]'
+    try:
+        for i in range (0,23):
         
-        select_server = driver.find_element(by = By.XPATH , value=value_)
-        ActionChains(driver).move_to_element(select_server).click(select_server).perform()
-        #滑鼠要滑過去才會顯示元件所以要這樣寫
-        #select_server.click()
-        start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
-        start_btn.click()
-        time.sleep(5)
-        data = html.fromstring(driver.page_source)
-        txt = data.xpath(value_+'/text()')
-        #print(txt[0])
-        popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
-        if 'The target server is unreachable!' in popup_txt :
-            srever_ = data.xpath(value_+'/text()')
-            #print(srever_[0])
-            line_notify('test fail' +srever_[0]) 
-            continue
-        time.sleep(5)
+            driver.get('https://sp.tanet.edu.tw/')
+            time.sleep(5)
+            select_server_btn = driver.find_element(by = By.XPATH , value="//div[@id='test__params']/ul/li/div[2]")
+            select_server_btn.click()
+            value_ = '//div[@data-value="'+str(i)+'"]'
+            
+            select_server = driver.find_element(by = By.XPATH , value=value_)
+            ActionChains(driver).move_to_element(select_server).click(select_server).perform()
+            #滑鼠要滑過去才會顯示元件所以要這樣寫
+            #select_server.click()
+            start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
+            start_btn.click()
+            time.sleep(5)
+            data = html.fromstring(driver.page_source)
+            txt = data.xpath(value_+'/text()')
+            #print(txt[0])
+            popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
+            if 'The target server is unreachable!' in popup_txt :
+                srever_ = data.xpath(value_+'/text()')
+                #print(srever_[0])
+                line_notify('test failed ' +srever_[0]) 
+                continue
+            time.sleep(5)
 
-        data = html.fromstring(driver.page_source)
-        
-        v4_data = data.xpath('//span[@id="jit__value--ipv4"]/text()')
-        #v6_data = data.xpath('//span[@id="jit__value--ipv6"]/text()')
-        #print(v4_data[0])
-        if '-' in v4_data[0]:
-            srever_ = data.xpath(value_+'/text()')
-            line_notify('test fail'+srever_[0])
+            data = html.fromstring(driver.page_source)
+            
+            v4_data = data.xpath('//span[@id="jit__value--ipv4"]/text()')
+            #v4_data = data.xpath('//span[@id="upl__value--ipv4"]/text()')
+            #v6_data = data.xpath('//span[@id="jit__value--ipv6"]/text()')
+            #print(v4_data[0])
+
+
+            try:
+                float(v4_data[0])
+            except:
+                srever_ = data.xpath(value_+'/text()')
+                line_notify('test failed by value '+srever_[0])
+                continue
+    except :
+        driver.close()
+        line_notify('test all failed')
+
         #print(v6_data[0])
         
 
