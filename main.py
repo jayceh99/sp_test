@@ -1,10 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from lxml import html
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 import requests
@@ -15,10 +11,12 @@ def sp_test():
     
     #for Edge
     
-    #option = webdriver.EdgeOptions()
+    option = webdriver.EdgeOptions()
     #option.add_argument("headless")
-    #driver = webdriver.Edge(options=option)
-    driver = webdriver.Edge()
+    option.add_argument("--blink-settings=imagesEnabled=false")
+    option.add_argument("--disable-gpu")
+    driver = webdriver.Edge(options=option)
+    #driver = webdriver.Edge()
     srever_ = ['init']
     #for Firefox
     '''
@@ -48,7 +46,7 @@ def sp_test():
 
             select_server_btn.click()
             value_ = '//div[@data-value="'+str(i)+'"]'
-            
+            #value_ = '//div[@data-value="5"]'
             select_server = driver.find_element(by = By.XPATH , value=value_)
             ActionChains(driver).move_to_element(select_server).click(select_server).perform()
             #滑鼠要滑過去才會顯示元件所以要這樣寫
@@ -63,7 +61,7 @@ def sp_test():
             if popup_txt.text != '' :
                 
                 #print(srever_[0])
-                line_notify('test failed ' +srever_[0]) 
+                line_notify('test failed ' +srever_[0]+' '+popup_txt.text) 
                 continue
 
             time.sleep(80)
@@ -83,13 +81,13 @@ def sp_test():
                 float(v4_data.text)
             except:
                 srever_ = data.xpath(value_+'/text()')
-                line_notify('test v4 failed by value '+srever_[0])
+                line_notify('test v4 failed by value '+srever_[0]+' '+v4_data.text)
                 continue
             try:
                 float(v6_data.text)
             except:
                 srever_ = data.xpath(value_+'/text()')
-                line_notify('test v6 failed by value '+srever_[0])
+                line_notify('test v6 failed by value '+srever_[0]+' '+v6_data.text)
                 continue
 
     except Exception as e :
