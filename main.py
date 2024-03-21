@@ -25,7 +25,7 @@ def sp_test():
     driver = webdriver.Firefox(options=option)
     '''
     try:
-        for i in range (0,23):
+        for i in range (-1,23):
             driver.get('https://sp.tanet.edu.tw/')
             count = 0
             while True :
@@ -45,18 +45,21 @@ def sp_test():
             select_server_btn = driver.find_element(by = By.XPATH , value="//div[@id='test__params']/ul/li/div[2]")
 
             select_server_btn.click()
-            value_ = '//div[@data-value="'+str(i)+'"]'
-            #value_ = '//div[@data-value="5"]'
-            select_server = driver.find_element(by = By.XPATH , value=value_)
-            ActionChains(driver).move_to_element(select_server).click(select_server).perform()
-            #滑鼠要滑過去才會顯示元件所以要這樣寫
-            #select_server.click()
-            start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
-            start_btn.click()
-            time.sleep(5)
-            #popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
-            popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
-            srever_ = data.xpath(value_+'/text()')
+            try:
+                value_ = '//div[@data-value="'+str(i)+'"]'
+                #value_ = '//div[@data-value="5"]'
+                select_server = driver.find_element(by = By.XPATH , value=value_)
+                ActionChains(driver).move_to_element(select_server).click(select_server).perform()
+                #滑鼠要滑過去才會顯示元件所以要這樣寫
+                #select_server.click()
+                start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
+                start_btn.click()
+                time.sleep(5)
+                #popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
+                popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
+                srever_ = data.xpath(value_+'/text()')
+            except :
+                continue
             #print(popup_txt)          
             print(srever_[0])
             if popup_txt.text != '' :
