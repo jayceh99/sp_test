@@ -12,7 +12,7 @@ def sp_test():
     #for Edge
     
     option = webdriver.EdgeOptions()
-    #option.add_argument("headless")
+    option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
     option.add_argument("--disable-gpu")
     driver = webdriver.Edge(options=option)
@@ -36,7 +36,7 @@ def sp_test():
                 if str(text[0].text) == '基隆市':
                     break
                 if count > 30 :
-                    line_notify('init test failed '+srever_[0])
+                    line_notify(srever_[0]+'  init test failed')
                     quit()
                 time.sleep(1)
 
@@ -58,6 +58,7 @@ def sp_test():
             popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
             srever_ = data.xpath(value_+'/text()')
             #print(popup_txt)          
+            print(srever_[0])
             if popup_txt.text != '' :
                 
                 #print(srever_[0])
@@ -69,25 +70,56 @@ def sp_test():
             #data = html.fromstring(driver.page_source)
             #v4_data = driver.find_element(by = By.XPATH , value='//span[@id="jit__value--ipv4"]')
             #print(v4_data.text)
-            #v4_data = data.xpath('//span[@id="jit__value--ipv4"]/text()')
-            #v4_data = data.xpath('//span[@id="upl__value--ipv4"]/text()')
-            #v6_data = data.xpath('//span[@id="jit__value--ipv6"]/text()')
-            v4_data = driver.find_element(by = By.XPATH , value='//span[@id="down__value--ipv4"]')
-            v6_data = driver.find_element(by = By.XPATH , value='//span[@id="down__value--ipv6"]')
+            v4_ping = driver.find_element(by= By.XPATH , value='//span[@id="ping__value--ipv4"]')
+            v4_jit = driver.find_element(by= By.XPATH , value='//span[@id="jit__value--ipv4"]')
+            v4_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv4"]')
+            v4_down = driver.find_element(by = By.XPATH , value='//span[@id="down__value--ipv4"]')
+            v6_ping = driver.find_element(by= By.XPATH , value='//span[@id="ping__value--ipv6"]')
+            v6_jit =driver.find_element(by= By.XPATH , value='//span[@id="jit__value--ipv6"]')
+            v6_down = driver.find_element(by = By.XPATH , value='//span[@id="down__value--ipv6"]')
+            v6_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv6"]')
             #print(v4_data[0])
-
-
+            print(v4_ping.text , v4_jit.text , v4_down.text , v4_upl.text , v6_ping.text , v6_jit.text , v6_down.text , v6_upl.text)
+           
             try:
-                float(v4_data.text)
+                float(v4_ping.text)
             except:
-                srever_ = data.xpath(value_+'/text()')
-                line_notify('test v4 failed by value '+srever_[0]+' '+v4_data.text)
+                line_notify(srever_[0]+'v4 ping test failed  text = '+v4_ping.text)
                 continue
             try:
-                float(v6_data.text)
+                float(v4_jit.text)
             except:
-                srever_ = data.xpath(value_+'/text()')
-                line_notify('test v6 failed by value '+srever_[0]+' '+v6_data.text)
+                line_notify(srever_[0]+'v4 jitter test failed  text = '+v4_jit.text)
+                continue
+            try:
+                float(v4_down.text)
+            except:
+                line_notify(srever_[0]+'v4 download test failed  text = '+v4_down.text)
+                continue
+            try:
+                float(v4_upl.text)
+            except:
+                line_notify(srever_[0]+'v4 upload test failed  text = '+v4_upl.text)
+                continue
+            try:
+                float(v6_ping.text)
+            except:
+                line_notify(srever_[0]+'v6 ping test failed  text = '+v6_ping.text)
+                continue
+            try:
+                float(v6_jit.text)
+            except:
+                line_notify(srever_[0]+'v6 jitter test failed  text = '+v6_jit.text)
+                continue
+            try:
+                float(v6_down.text)
+            except:
+                line_notify(srever_[0]+'v6 download test failed  text = '+v6_down.text)
+                continue
+            try:
+                float(v6_upl.text)
+            except:
+                line_notify(srever_[0]+'v6 upload test failed  text = '+v6_upl.text)
                 continue
 
     except Exception as e :
@@ -125,6 +157,7 @@ def test():
     
     print('use  ' +str(count)  + 's') 
 def line_notify(text): 
+    
     config_file = open(r'C:\config.json','r',encoding='utf-8')
     config_file = json.loads(config_file.read())
     token = config_file['token']
@@ -136,6 +169,7 @@ def line_notify(text):
 
     requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
 
+ 
 
 
 
