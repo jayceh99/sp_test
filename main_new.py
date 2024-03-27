@@ -142,19 +142,21 @@ def re_sp_test(re_test_list):
             select_server_btn = driver.find_element(by = By.XPATH , value="//div[@id='test__params']/ul/li/div[2]")
 
             select_server_btn.click()
-            
-            value_ = '//div[@data-value="'+str(i)+'"]'
-            #value_ = '//div[@data-value="5"]'
-            select_server = driver.find_element(by = By.XPATH , value=value_)
-            ActionChains(driver).move_to_element(select_server).click(select_server).perform()
-            #滑鼠要滑過去才會顯示元件所以要這樣寫
-            #select_server.click()
-            start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
-            start_btn.click()
-            time.sleep(5)
-            #popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
-            popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
-            srever_ = data.xpath(value_+'/text()')
+            try:
+                value_ = '//div[@data-value="'+str(i)+'"]'
+                #value_ = '//div[@data-value="5"]'
+                select_server = driver.find_element(by = By.XPATH , value=value_)
+                ActionChains(driver).move_to_element(select_server).click(select_server).perform()
+                #滑鼠要滑過去才會顯示元件所以要這樣寫
+                #select_server.click()
+                start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
+                start_btn.click()
+                time.sleep(5)
+                #popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
+                popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
+                srever_ = data.xpath(value_+'/text()')
+            except :
+                continue
             
             #print(popup_txt)          
             print(srever_[0])
@@ -253,9 +255,15 @@ def test():
     
     print('use  ' +str(count)  + 's') 
     '''
-    server_list = [1,2]
-    if server_list == []:
-        print('none')
+    v4_ping = '1.0'
+    v4_jit = '2.0'
+    v4_down = '-'
+    try:
+        float(v4_ping)
+        float(v4_jit)
+        float(v4_down)
+    except Exception as e:
+        print(str(e))
 def line_notify(text): 
     
     config_file = open(r'C:\config.json','r',encoding='utf-8')
