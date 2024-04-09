@@ -27,6 +27,7 @@ def sp_test():
     '''
     
     for i in range (-1,23):
+    #for i in range (-1,1):
         try:
             driver.get('https://sp.tanet.edu.tw/')
             count = 0
@@ -84,7 +85,7 @@ def sp_test():
             v6_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv6"]')
             #print(v4_data[0])
             print(v4_ping.text , v4_jit.text , v4_down.text , v4_upl.text , v6_ping.text , v6_jit.text , v6_down.text , v6_upl.text)
-           
+            
             try:
                 float(v4_ping.text)
                 float(v4_jit.text)
@@ -99,8 +100,11 @@ def sp_test():
                 continue
 
         except Exception as e :
-            line_notify(str(e))
-            continue
+            if i == -1 :
+                continue
+            else:
+                line_notify(str(e))
+                continue
     driver.close()
     return re_test_list
         #line_notify('test all failed')
@@ -120,7 +124,6 @@ def re_sp_test(re_test_list):
     option.add_argument("-headless")
     driver = webdriver.Firefox(options=option)
     '''
-   
     for i in re_test_list:
         try:
             driver.get('https://sp.tanet.edu.tw/')
@@ -265,7 +268,7 @@ def test():
     except Exception as e:
         print(str(e))
 def line_notify(text): 
-    
+    '''
     config_file = open(r'C:\config.json','r',encoding='utf-8')
     config_file = json.loads(config_file.read())
     token = config_file['token']
@@ -276,12 +279,14 @@ def line_notify(text):
     params = {'message':'\n'+text}
 
     requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
+    '''    
 
+    print(text)
  
 
 def main():
     re_test_list = sp_test()
-    if re_sp_test == []:
+    if re_test_list == []:
         line_notify('測試完成')
     else:
         re_sp_test(re_test_list=re_test_list)
