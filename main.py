@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from lxml import html
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 import time
 import requests
 import json
@@ -19,13 +20,13 @@ def sp_test():
     #driver = webdriver.Edge()
     srever_ = ['init']
     re_test_list = []
+    except_count = 0
     #for Firefox
     '''
     option = FirefoxOptions()
     option.add_argument("-headless")
     driver = webdriver.Firefox(options=option)
     '''
-    
     for i in range (-1,23):
     #for i in range (-1,1):
         try:
@@ -98,13 +99,18 @@ def sp_test():
             except:
                 re_test_list.append(i)
                 continue
+        
+
+        except NoSuchElementException :
+            except_count = except_count + 1
+            if except_count > 2 :
+                line_notify('伺服器選擇失敗')
+                driver.close()
+                quit()
 
         except Exception as e :
-            if i == -1 :
-                continue
-            else:
-                line_notify(str(e))
-                continue
+            line_notify(str(e))
+            continue
     driver.close()
     return re_test_list
         #line_notify('test all failed')
@@ -230,6 +236,22 @@ def re_sp_test(re_test_list):
             continue
     driver.close()
 
+def line_notify(text): 
+    
+    config_file = open(r'C:\config.json','r',encoding='utf-8')
+    config_file = json.loads(config_file.read())
+    token = config_file['token']
+    headers = {
+            "Authorization": "Bearer " + ""+token+"",
+            "Content-Type": "application/x-www-form-urlencoded"} 
+
+    params = {'message':'\n'+text}
+
+    requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
+    
+    #print(text)
+ 
+
 def test():
     '''
     driver = webdriver.Edge()
@@ -266,20 +288,7 @@ def test():
         float(v4_down)
     except Exception as e:
         print(str(e))
-def line_notify(text): 
-    
-    config_file = open(r'C:\config.json','r',encoding='utf-8')
-    config_file = json.loads(config_file.read())
-    token = config_file['token']
-    headers = {
-            "Authorization": "Bearer " + ""+token+"",
-            "Content-Type": "application/x-www-form-urlencoded"} 
 
-    params = {'message':'\n'+text}
-
-    requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
-
- 
 
 def main():
     re_test_list = sp_test()
@@ -287,7 +296,7 @@ def main():
         line_notify('測試完成')
     else:
         re_sp_test(re_test_list=re_test_list)
-        line_notify('測試完成')
+        line_notify('測試完成(複測)')
 
 
 
