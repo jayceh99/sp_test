@@ -13,7 +13,7 @@ def sp_test():
     #for Edge
     
     option = webdriver.EdgeOptions()
-    #option.add_argument("headless")
+    option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
     option.add_argument("--disable-gpu")
     driver = webdriver.Edge(options=option)
@@ -67,7 +67,7 @@ def sp_test():
             #srever_ = data.xpath("//div[@data-value='1']/text()")
 
             #print(popup_txt)
-                      
+            print(srever_[0])
             if popup_txt.text != '' :
                 
                 #print(srever_[0])
@@ -75,7 +75,7 @@ def sp_test():
                 re_test_list.append(i)
                 continue
 
-            time.sleep(5)
+            time.sleep(80)
 
             #data = html.fromstring(driver.page_source)
             #v4_data = driver.find_element(by = By.XPATH , value='//span[@id="jit__value--ipv4"]')
@@ -243,7 +243,7 @@ def re_sp_test(re_test_list):
     driver.close()
 
 def line_notify(text): 
-    '''
+    
     config_file = open(r'C:\config.json','r',encoding='utf-8')
     config_file = json.loads(config_file.read())
     token = config_file['token']
@@ -254,8 +254,8 @@ def line_notify(text):
     params = {'message':'\n'+text}
 
     requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
-    '''
-    print('\n\n\n\n\n\n'+text)
+    
+    #print('\n\n\n\n\n\n'+text)
  
 
 def test():
