@@ -156,7 +156,7 @@ class c_sp_pltbar:
         
         for k in self.down_upload:
             self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+'\\limit6M\\' + self.csv_filename +'---'+ k
+            path = self.path+'\\unlimited\\' + self.csv_filename +'---'+ k
             range0_2 = 0
             range2_4 = 0
             range4_6 = 0
@@ -167,8 +167,7 @@ class c_sp_pltbar:
             range14_16 = 0
             range16_18 = 0
             range18_ = 0
-            self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+'\\unlimited\\' + self.csv_filename +'---'+ k
+            
             for i in range(self.start_column , self.sheet.max_row+1):
                 try:
                     value = float(self.sheet.cell(row = i , column = self.down_upload[k]).value)
