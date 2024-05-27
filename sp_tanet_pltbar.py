@@ -6,15 +6,14 @@ import os
 class c_sp_pltbar:
     def __init__(self , path) -> None:
         self.path = path
-        self.start_column = 6
-        self.down_upload = {'IPv4_Download':2 , 'IPv4_Upload':4 , 'IPv6_Download':3 , 'IPv6_Upload':5}
-        self.ping_jitter = {'IPv4_Delay':6 , 'IPv4_Jitter':8 , 'IPv6_Delay':7 , 'IPv6_Jitter':9}
+        self.start_column = 12
+        self.down_upload = {'IPv4 Download':2 , 'IPv4 Upload':4 , 'IPv6 Download':3 , 'IPv6 Upload':5}
+        self.ping_jitter = {'IPv4 Delay':6 , 'IPv4 Jitter':8 , 'IPv6 Delay':7 , 'IPv6 Jitter':9}
 
     def f_loop(self):
         self.f_find_all_file()
         for self.csv_filename in self.file_6M:
             self.csv_filepath = self.path + '\\' + self.csv_filename
-            print(self.csv_filepath)
             self.f_get_all_value()
             self.f_plt6m_bar()
 
@@ -218,7 +217,7 @@ class c_sp_pltbar:
     def f_delay_jitter(self):
          for k in self.ping_jitter:
             self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+ '\\'+self.csv_filename +'---'+ k
+            path = self.path+ '\\delay_jitter\\'+self.csv_filename +'---'+ k
             range_10 = 0
             range10_20 = 0
             range20_30 = 0
