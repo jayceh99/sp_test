@@ -6,14 +6,15 @@ import os
 class c_sp_pltbar:
     def __init__(self , path) -> None:
         self.path = path
-        self.start_column = 12
-        self.down_upload = {'IPv4 Download':2 , 'IPv4 Upload':4 , 'IPv6 Download':3 , 'IPv6 Upload':5}
-        self.ping_jitter = {'IPv4 Delay':6 , 'IPv4 Jitter':8 , 'IPv6 Delay':7 , 'IPv6 Jitter':9}
+        self.start_column = 6
+        self.down_upload = {'IPv4_Download':2 , 'IPv4_Upload':4 , 'IPv6_Download':3 , 'IPv6_Upload':5}
+        self.ping_jitter = {'IPv4_Delay':6 , 'IPv4_Jitter':8 , 'IPv6_Delay':7 , 'IPv6_Jitter':9}
 
     def f_loop(self):
         self.f_find_all_file()
         for self.csv_filename in self.file_6M:
             self.csv_filepath = self.path + '\\' + self.csv_filename
+            print(self.csv_filepath)
             self.f_get_all_value()
             self.f_plt6m_bar()
 
@@ -96,6 +97,7 @@ class c_sp_pltbar:
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
+            plt.xticks(fontsize=24) 
             plt.ylim(0,32)
             y_ticks = np.arange(0, 32, 2)
             plt.yticks(y_ticks)
@@ -141,7 +143,8 @@ class c_sp_pltbar:
             y_major_locator=plt.MultipleLocator(2)
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
-            plt.bar(x,h,tick_label=label,width=0.5)  
+            plt.bar(x, h, tick_label=label, width=0.5) 
+            plt.xticks(fontsize=24) 
             plt.ylim(0,32)
             y_ticks = np.arange(0, 32, 2)
             plt.yticks(y_ticks)
@@ -156,7 +159,7 @@ class c_sp_pltbar:
         
         for k in self.down_upload:
             self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+'\\unlimited\\' + self.csv_filename +'---'+ k
+            path = self.path+'\\limit6M\\' + self.csv_filename +'---'+ k
             range0_2 = 0
             range2_4 = 0
             range4_6 = 0
@@ -167,7 +170,8 @@ class c_sp_pltbar:
             range14_16 = 0
             range16_18 = 0
             range18_ = 0
-            
+            self.csv_filename = self.csv_filename.replace('.csv','')
+            path = self.path+'\\unlimited\\' + self.csv_filename +'---'+ k
             for i in range(self.start_column , self.sheet.max_row+1):
                 try:
                     value = float(self.sheet.cell(row = i , column = self.down_upload[k]).value)
@@ -203,6 +207,7 @@ class c_sp_pltbar:
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
+            plt.xticks(fontsize=24) 
             plt.ylim(0,32)
             y_ticks = np.arange(0, 32, 2)
             plt.yticks(y_ticks)
@@ -216,7 +221,7 @@ class c_sp_pltbar:
     def f_delay_jitter(self):
          for k in self.ping_jitter:
             self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+ '\\delay_jitter\\'+self.csv_filename +'---'+ k
+            path = self.path+ '\\'+self.csv_filename +'---'+ k
             range_10 = 0
             range10_20 = 0
             range20_30 = 0
@@ -252,6 +257,7 @@ class c_sp_pltbar:
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
+            plt.xticks(fontsize=24) 
             plt.get_current_fig_manager().window.state('zoomed')
             plt.ylim(0,32)
             y_ticks = np.arange(0, 32, 2)
@@ -262,7 +268,7 @@ class c_sp_pltbar:
             plt.close('all')
 
 def main ():
-    path = ( r'C:\Users\jayce\Desktop\新增資料夾 (2)\新增資料夾\新增資料夾')
+    path = ( r'C:\Users\jayce\Desktop\新增資料夾')
     sp_pltbar = c_sp_pltbar(path)
     sp_pltbar.f_loop()
 
