@@ -14,15 +14,14 @@ class c_sp_pltbar:
         self.f_find_all_file()
         for self.csv_filename in self.file_6M:
             self.csv_filepath = self.path + '\\' + self.csv_filename
-            print(self.csv_filepath)
             self.f_get_all_value()
             self.f_plt6m_bar()
-
+            self.f_delay_jitter()
         for self.csv_filename in self.file_10M:
             self.csv_filepath = self.path + '\\' + self.csv_filename
             self.f_get_all_value()
             self.f_plt10m_bar()
-            
+            self.f_delay_jitter()
         for self.csv_filename in self.file_:
             self.csv_filepath = self.path + '\\' + self.csv_filename
             self.f_get_all_value() 
@@ -159,7 +158,6 @@ class c_sp_pltbar:
         
         for k in self.down_upload:
             self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+'\\limit6M\\' + self.csv_filename +'---'+ k
             range0_2 = 0
             range2_4 = 0
             range4_6 = 0
@@ -207,7 +205,7 @@ class c_sp_pltbar:
             ax=plt.gca()
             ax.yaxis.set_major_locator(y_major_locator)
             plt.bar(x,h,tick_label=label,width=0.5)  
-            plt.xticks(fontsize=24) 
+            plt.xticks(fontsize=18) 
             plt.ylim(0,32)
             y_ticks = np.arange(0, 32, 2)
             plt.yticks(y_ticks)
@@ -221,7 +219,7 @@ class c_sp_pltbar:
     def f_delay_jitter(self):
          for k in self.ping_jitter:
             self.csv_filename = self.csv_filename.replace('.csv','')
-            path = self.path+ '\\'+self.csv_filename +'---'+ k
+            path = self.path+ '\\delay_jitter\\'+self.csv_filename +'---'+ k
             range_10 = 0
             range10_20 = 0
             range20_30 = 0

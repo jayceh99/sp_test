@@ -27,7 +27,7 @@ def sp_test():
     option.add_argument("-headless")
     driver = webdriver.Firefox(options=option)
     '''
-    for i in range (-1,23):
+    for i in range (-1,24):
     #for i in range (-1,1):
         try:
             driver.get('https://sp.tanet.edu.tw/')
@@ -255,7 +255,7 @@ def line_notify(text):
 
     requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
     
-    #print('\n\n\n\n\n\n'+text)
+    #print('\n\n\n\n\n\nexception\n\n\n\n\n\n'+text)
  
 
 def test():
