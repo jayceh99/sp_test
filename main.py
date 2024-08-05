@@ -11,7 +11,7 @@ import sys
 def sp_test():
     
     #for Edge
-    
+    retry_count = 0
     option = webdriver.EdgeOptions()
     option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
@@ -21,6 +21,7 @@ def sp_test():
     srever_ = ['init']
     re_test_list = []
     except_count = 0
+    retry_count = 0
     #for Firefox
     '''
     option = FirefoxOptions()
@@ -111,10 +112,18 @@ def sp_test():
             if except_count > 2 :
                 line_notify('伺服器選擇失敗')
                 driver.close()
-                quit()
+                sys.exit()
 
         except Exception as e :
-            line_notify(str(e))
+            if 'CONNECTION_REFUSED' in str(e):
+                retry_count = retry_count + 1
+                if retry_count > 3 :
+                    line_notify('連線失敗')
+                    driver.close()
+                    sys.exit()
+                
+            else:
+                line_notify(str(e))
             continue
 
     driver.close()
@@ -149,7 +158,7 @@ def re_sp_test(re_test_list):
                     break
                 if count > 30 :
                     line_notify(srever_[0]+'  init test failed')
-                    quit()
+                    sys.exit()
                 time.sleep(1)
 
             #time.sleep(10)
@@ -238,7 +247,15 @@ def re_sp_test(re_test_list):
                 continue
 
         except Exception as e :
-            line_notify(str(e))
+            if 'CONNECTION_REFUSED' in str(e):
+                retry_count = retry_count + 1
+                if retry_count > 3 :
+                    line_notify('連線失敗')
+                    driver.close()
+                    sys.exit()
+                
+            else:
+                line_notify(str(e))
             continue
     driver.close()
 
