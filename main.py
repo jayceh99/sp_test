@@ -41,7 +41,7 @@ def sp_test():
                 if str(text[0].text) == '教育部' or   '教網中心' in str(text[0].text) :
                     break
                 if count > 30 :
-                    line_notify(srever_[0]+'  init test failed')
+                    line_notify('init test failed')
                     sys.exit()
                 time.sleep(1)
 
