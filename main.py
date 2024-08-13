@@ -154,7 +154,7 @@ def re_sp_test(re_test_list):
                 data = html.fromstring(driver.page_source)
                 text = data.xpath("//div[@data-value='1']")
                 count += 1 
-                if str(text[0].text) == '教育部' or   '教網中心' in str(text[0].text) :
+                if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
                     line_notify('init test failed')
