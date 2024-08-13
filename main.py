@@ -28,23 +28,23 @@ def sp_test():
     option.add_argument("-headless")
     driver = webdriver.Firefox(options=option)
     '''
-    for i in range (-1,24):
+    for i in range (1,24):
     #for i in range (-1,1):
         try:
             driver.get('https://sp.tanet.edu.tw/')
             count = 0
+            time.sleep(1)
             while True :
-                time.sleep(1)
                 data = html.fromstring(driver.page_source)
                 text = data.xpath("//div[@data-value='1']")
                 count += 1 
-                if str(text[0].text) == '教育部' or   '教網中心' in str(text[0].text) :
+                if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
                     line_notify('init test failed')
                     sys.exit()
                 time.sleep(1)
-
+            
             #time.sleep(10)
 
             select_server_btn = driver.find_element(by = By.XPATH , value="//div[@id='test__params']/ul/li/div[2]")
@@ -149,15 +149,15 @@ def re_sp_test(re_test_list):
         try:
             driver.get('https://sp.tanet.edu.tw/')
             count = 0
+            time.sleep(1)
             while True :
                 data = html.fromstring(driver.page_source)
                 text = data.xpath("//div[@data-value='1']")
                 count += 1 
-                time.sleep(1)
                 if str(text[0].text) == '教育部' or   '教網中心' in str(text[0].text) :
                     break
                 if count > 30 :
-                    line_notify(srever_[0]+'  init test failed')
+                    line_notify('init test failed')
                     sys.exit()
                 time.sleep(1)
 
