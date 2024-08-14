@@ -67,7 +67,7 @@ def sp_test():
             srever_ = data.xpath(value_+'/text()')
             #srever_ = data.xpath("//div[@data-value='1']/text()")
 
-            #print(popup_txt)
+            #print(popuv6p_txt)
             print(srever_[0])
             if popup_txt.text != '' :
                 
@@ -91,16 +91,17 @@ def sp_test():
             v6_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv6"]')
             #print(v4_data[0])
             print(v4_ping.text , v4_jit.text , v4_down.text , v4_upl.text , v6_ping.text , v6_jit.text , v6_down.text , v6_upl.text)
-            
+            print(type(v6_down.text))
             try:
                 float(v4_ping.text)
                 float(v4_jit.text)
                 float(v4_down.text)
                 float(v4_upl.text)
-                float(v6_ping.text)
-                float(v6_jit.text)
-                float(v6_down.text)
-                float(v6_upl.text)
+                if v6_ping.text != '' :
+                    float(v6_ping.text)
+                    float(v6_jit.text)
+                    float(v6_down.text)
+                    float(v6_upl.text)
             except:
                 re_test_list.append(i)
                 continue
@@ -225,26 +226,27 @@ def re_sp_test(re_test_list):
             except:
                 line_notify(srever_[0]+'v4 upload test failed  text = '+v4_upl.text)
                 continue
-            try:
-                float(v6_ping.text)
-            except:
-                line_notify(srever_[0]+'v6 ping test failed  text = '+v6_ping.text)
-                continue
-            try:
-                float(v6_jit.text)
-            except:
-                line_notify(srever_[0]+'v6 jitter test failed  text = '+v6_jit.text)
-                continue
-            try:
-                float(v6_down.text)
-            except:
-                line_notify(srever_[0]+'v6 download test failed  text = '+v6_down.text)
-                continue
-            try:
-                float(v6_upl.text)
-            except:
-                line_notify(srever_[0]+'v6 upload test failed  text = '+v6_upl.text)
-                continue
+            if v6_ping.text != '' :
+                try:
+                    float(v6_ping.text)
+                except:
+                    line_notify(srever_[0]+'v6 ping test failed  text = '+v6_ping.text)
+                    continue
+                try:
+                    float(v6_jit.text)
+                except:
+                    line_notify(srever_[0]+'v6 jitter test failed  text = '+v6_jit.text)
+                    continue
+                try:
+                    float(v6_down.text)
+                except:
+                    line_notify(srever_[0]+'v6 download test failed  text = '+v6_down.text)
+                    continue
+                try:
+                    float(v6_upl.text)
+                except:
+                    line_notify(srever_[0]+'v6 upload test failed  text = '+v6_upl.text)
+                    continue
 
         except Exception as e :
             if 'CONNECTION_REFUSED' in str(e):
@@ -260,7 +262,7 @@ def re_sp_test(re_test_list):
     driver.close()
 
 def line_notify(text): 
-    
+
     config_file = open(r'C:\config.json','r',encoding='utf-8')
     config_file = json.loads(config_file.read())
     token = config_file['token']
