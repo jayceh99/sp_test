@@ -41,7 +41,7 @@ def sp_test():
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
-                    line_notify('init test failed')
+                    line_notify('伺服器列表讀取失敗')
                     sys.exit()
                 time.sleep(1)
             
@@ -119,7 +119,7 @@ def sp_test():
             if 'CONNECTION_REFUSED' in str(e) or 'CONNECTION_TIMED_OUT' in str(e):
                 retry_count = retry_count + 1
                 if retry_count > 3 :
-                    line_notify('連線失敗')
+                    line_notify('連線失敗 connection refused')
                     driver.close()
                     sys.exit()
                 
