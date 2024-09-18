@@ -116,7 +116,7 @@ def sp_test():
                 sys.exit()
 
         except Exception as e :
-            if 'CONNECTION_REFUSED' in str(e):
+            if 'CONNECTION_REFUSED' in str(e) or 'CONNECTION_TIMED_OUT' in str(e):
                 retry_count = retry_count + 1
                 if retry_count > 3 :
                     line_notify('連線失敗')
