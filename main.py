@@ -153,8 +153,17 @@ def re_sp_test(re_test_list):
     option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
     option.add_argument("--disable-gpu")
+    option.add_experimental_option("prefs", {
+        "profile.default_content_setting_values.notifications": 1,
+    })
     driver = webdriver.Edge(options=option)
-    #driver = webdriver.Edge()
+    driver.execute_cdp_cmd('Network.enable', {})
+    driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
+        'offline': False,
+        'latency': 0,  
+        'downloadThroughput': 500 * 1024,  
+        'uploadThroughput': 500 * 1024,    
+    })
     srever_ = ['init']
     init_retry = 0
     #for Firefox
