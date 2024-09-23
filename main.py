@@ -11,17 +11,27 @@ import sys
 def sp_test():
     
     #for Edge
-    retry_count = 0
     option = webdriver.EdgeOptions()
     option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
     option.add_argument("--disable-gpu")
+    option.add_experimental_option("prefs", {
+        "profile.default_content_setting_values.notifications": 1,
+    })
     driver = webdriver.Edge(options=option)
+    driver.execute_cdp_cmd('Network.enable', {})
+    driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
+        'offline': False,
+        'latency': 0,  
+        'downloadThroughput': 500 * 1024,  
+        'uploadThroughput': 500 * 1024,    
+    })
     #driver = webdriver.Edge()
     srever_ = ['init']
     re_test_list = []
     except_count = 0
     retry_count = 0
+    init_retry = 0
     #for Firefox
     '''
     option = FirefoxOptions()
@@ -41,8 +51,14 @@ def sp_test():
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
-                    line_notify('伺服器列表讀取失敗')
-                    sys.exit()
+                    if init_retry > 3 :
+                        line_notify('伺服器列表讀取失敗')
+                        sys.exit()
+                    else:
+                        init_retry = init_retry + 1
+                        i = i - 1
+                        continue
+                    
                 time.sleep(1)
             
             #time.sleep(10)
@@ -72,7 +88,7 @@ def sp_test():
             if popup_txt.text != '' :
                 
                 #print(srever_[0])
-                #line_notify('test failed ' +srever_[0]+' '+popup_txt.text) 
+                #line_notify('測試失敗 ' +srever_[0]+' '+popup_txt.text) 
                 re_test_list.append(i)
                 continue
 
@@ -91,7 +107,7 @@ def sp_test():
             v6_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv6"]')
             #print(v4_data[0])
             print(v4_ping.text , v4_jit.text , v4_down.text , v4_upl.text , v6_ping.text , v6_jit.text , v6_down.text , v6_upl.text)
-            print(type(v6_down.text))
+            #print(type(v6_down.text))
             try:
                 float(v4_ping.text)
                 float(v4_jit.text)
@@ -140,6 +156,7 @@ def re_sp_test(re_test_list):
     driver = webdriver.Edge(options=option)
     #driver = webdriver.Edge()
     srever_ = ['init']
+    init_retry = 0
     #for Firefox
     '''
     option = FirefoxOptions()
@@ -158,8 +175,13 @@ def re_sp_test(re_test_list):
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
-                    line_notify('init test failed')
-                    sys.exit()
+                    if init_retry > 3 :
+                        line_notify('伺服器列表讀取失敗')
+                        sys.exit()
+                    else:
+                        init_retry = init_retry + 1
+                        i = i - 1
+                        continue
                 time.sleep(1)
 
             #time.sleep(10)
@@ -187,7 +209,7 @@ def re_sp_test(re_test_list):
             if popup_txt.text != '' :
                 
                 #print(srever_[0])
-                line_notify('test failed ' +srever_[0]+' '+popup_txt.text) 
+                line_notify('測試失敗 ' +srever_[0]+' '+popup_txt.text) 
                 continue
 
             time.sleep(80)
@@ -209,43 +231,43 @@ def re_sp_test(re_test_list):
             try:
                 float(v4_ping.text)
             except:
-                line_notify(srever_[0]+'v4 ping test failed  text = '+v4_ping.text)
+                line_notify(srever_[0]+'v4 ping 測試失敗  text = '+v4_ping.text)
                 continue
             try:
                 float(v4_jit.text)
             except:
-                line_notify(srever_[0]+'v4 jitter test failed  text = '+v4_jit.text)
+                line_notify(srever_[0]+'v4 jitter 測試失敗  text = '+v4_jit.text)
                 continue
             try:
                 float(v4_down.text)
             except:
-                line_notify(srever_[0]+'v4 download test failed  text = '+v4_down.text)
+                line_notify(srever_[0]+'v4 download 測試失敗  text = '+v4_down.text)
                 continue
             try:
                 float(v4_upl.text)
             except:
-                line_notify(srever_[0]+'v4 upload test failed  text = '+v4_upl.text)
+                line_notify(srever_[0]+'v4 upload 測試失敗  text = '+v4_upl.text)
                 continue
             if v6_ping.text != '' :
                 try:
                     float(v6_ping.text)
                 except:
-                    line_notify(srever_[0]+'v6 ping test failed  text = '+v6_ping.text)
+                    line_notify(srever_[0]+'v6 ping 測試失敗  text = '+v6_ping.text)
                     continue
                 try:
                     float(v6_jit.text)
                 except:
-                    line_notify(srever_[0]+'v6 jitter test failed  text = '+v6_jit.text)
+                    line_notify(srever_[0]+'v6 jitter 測試失敗  text = '+v6_jit.text)
                     continue
                 try:
                     float(v6_down.text)
                 except:
-                    line_notify(srever_[0]+'v6 download test failed  text = '+v6_down.text)
+                    line_notify(srever_[0]+'v6 download 測試失敗  text = '+v6_down.text)
                     continue
                 try:
                     float(v6_upl.text)
                 except:
-                    line_notify(srever_[0]+'v6 upload test failed  text = '+v6_upl.text)
+                    line_notify(srever_[0]+'v6 upload 測試失敗  text = '+v6_upl.text)
                     continue
 
         except Exception as e :
