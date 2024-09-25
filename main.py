@@ -23,8 +23,8 @@ def sp_test():
     driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
         'offline': False,
         'latency': 0,  
-        'downloadThroughput': 500 * 1024,  
-        'uploadThroughput': 500 * 1024,    
+        'downloadThroughput': 1000 * 1024,  
+        'uploadThroughput': 1000 * 1024,    
     })
     #driver = webdriver.Edge()
     srever_ = ['init']
@@ -51,14 +51,15 @@ def sp_test():
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
-                    if init_retry > 3 :
+                    if init_retry > 10 :
                         line_notify('伺服器列表讀取失敗')
                         sys.exit()
                     else:
                         init_retry = init_retry + 1
                         i = i - 1
                         continue
-                    
+                else:
+                    continue
                 time.sleep(1)
             
             #time.sleep(10)
@@ -161,8 +162,8 @@ def re_sp_test(re_test_list):
     driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
         'offline': False,
         'latency': 0,  
-        'downloadThroughput': 500 * 1024,  
-        'uploadThroughput': 500 * 1024,    
+        'downloadThroughput': 1000 * 1024,  
+        'uploadThroughput': 1000 * 1024,    
     })
     srever_ = ['init']
     init_retry = 0
@@ -184,7 +185,7 @@ def re_sp_test(re_test_list):
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
                     break
                 if count > 30 :
-                    if init_retry > 3 :
+                    if init_retry > 10 :
                         line_notify('伺服器列表讀取失敗')
                         sys.exit()
                     else:
@@ -231,6 +232,7 @@ def re_sp_test(re_test_list):
             v4_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv4"]')
             v4_down = driver.find_element(by = By.XPATH , value='//span[@id="down__value--ipv4"]')
             v6_ping = driver.find_element(by= By.XPATH , value='//span[@id="ping__value--ipv6"]')
+    
             v6_jit =driver.find_element(by= By.XPATH , value='//span[@id="jit__value--ipv6"]')
             v6_down = driver.find_element(by = By.XPATH , value='//span[@id="down__value--ipv6"]')
             v6_upl = driver.find_element(by= By.XPATH , value='//span[@id="upl__value--ipv6"]')
