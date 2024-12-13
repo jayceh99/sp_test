@@ -15,19 +15,22 @@ def sp_test():
     option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
     option.add_argument("--disable-gpu")
-    option.add_experimental_option("prefs", {
+    """ option.add_experimental_option("prefs", {
         "profile.default_content_setting_values.notifications": 1,
-    })
+    }) """
     driver = webdriver.Edge(options=option)
-    driver.execute_cdp_cmd('Network.enable', {})
+    """ driver.execute_cdp_cmd('Network.enable', {})
     driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
         'offline': False,
         'latency': 0,  
         'downloadThroughput': 1000 * 1024,  
         'uploadThroughput': 1000 * 1024,    
-    })
+    }) """
     #driver = webdriver.Edge()
-    srever_ = ['init']
+    server_value = [18 , 204 , 191 , 192 , 193 , 208 , 201 , 194 , 195 , 196 , 205 , 203 , 197 , 198 , 206 , 202 , 190 , 200 , 199 , 207 , 20 , 1 , 19 , 21 , 22 , 23 , 
+                    24 , 25 , 26 , 27 , 28 , 29 , 30 , 31 , 32 , 33 , 15 , 34 , 35 , 36 , 37 , 38]
+    
+    server_ = ['init']
     re_test_list = []
     except_count = 0
     retry_count = 0
@@ -38,17 +41,19 @@ def sp_test():
     option.add_argument("-headless")
     driver = webdriver.Firefox(options=option)
     '''
-    for i in range (1,24):
+    for i in server_value:
     #for i in range (-1,1):
         try:
-            driver.get('https://sp.tanet.edu.tw/')
             count = 0
-            time.sleep(1)
             while True :
+                driver.get('https://sp.tanet.edu.tw/')
+                time.sleep(5)
                 data = html.fromstring(driver.page_source)
-                text = data.xpath("//div[@data-value='1']")
-                count += 1 
+                text = data.xpath("/html/body/div[1]/main/section[1]/div/div/ul/li[2]/div[2]/div[1]/div")
+                count += 1        
+                time.sleep(1)
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
+            
                     break
                 if count > 30 :
                     if init_retry > 10 :
@@ -70,7 +75,7 @@ def sp_test():
             
             #value_ = '//div[@class="choices__list choices__list--dropdown"]/div[1]/div['+str(i)+']'
             #choices--server__select-item-choice-1
-            value_ = '//div[@id="choices--server__select-item-choice-'+str(i)+'"]'
+            value_ = '//li[@data-item-value='+str(i)+']'
             
             select_server = driver.find_element(by = By.XPATH , value=value_)
             ActionChains(driver).move_to_element(select_server).click(select_server).perform()
@@ -78,22 +83,23 @@ def sp_test():
             #select_server.click()
             start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
             start_btn.click()
-            time.sleep(5)
+            time.sleep(10)
             #popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
             popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
-            srever_ = data.xpath(value_+'/text()')
+            server_ = data.xpath(value_+"/div")
+     
             #srever_ = data.xpath("//div[@data-value='1']/text()")
-
+            
             #print(popuv6p_txt)
-            print(srever_[0])
+            print(server_[0].text)
             if popup_txt.text != '' :
                 
-                #print(srever_[0])
+                #print(server_[0])
                 #line_notify('測試失敗 ' +srever_[0]+' '+popup_txt.text) 
                 re_test_list.append(i)
                 continue
 
-            time.sleep(80)
+            time.sleep(75)
 
             #data = html.fromstring(driver.page_source)
             #v4_data = driver.find_element(by = By.XPATH , value='//span[@id="jit__value--ipv4"]')
@@ -154,18 +160,8 @@ def re_sp_test(re_test_list):
     option.add_argument("headless")
     option.add_argument("--blink-settings=imagesEnabled=false")
     option.add_argument("--disable-gpu")
-    option.add_experimental_option("prefs", {
-        "profile.default_content_setting_values.notifications": 1,
-    })
     driver = webdriver.Edge(options=option)
-    driver.execute_cdp_cmd('Network.enable', {})
-    driver.execute_cdp_cmd('Network.emulateNetworkConditions', {
-        'offline': False,
-        'latency': 0,  
-        'downloadThroughput': 1000 * 1024,  
-        'uploadThroughput': 1000 * 1024,    
-    })
-    srever_ = ['init']
+    server_ = ['init']
     init_retry = 0
     #for Firefox
     '''
@@ -175,14 +171,16 @@ def re_sp_test(re_test_list):
     '''
     for i in re_test_list:
         try:
-            driver.get('https://sp.tanet.edu.tw/')
             count = 0
-            time.sleep(1)
             while True :
+                driver.get('https://sp.tanet.edu.tw/')
+                time.sleep(5)
                 data = html.fromstring(driver.page_source)
-                text = data.xpath("//div[@data-value='1']")
-                count += 1 
+                text = data.xpath("/html/body/div[1]/main/section[1]/div/div/ul/li[2]/div[2]/div[1]/div")
+                count += 1        
+                time.sleep(1)
                 if  '教網中心' in str(text[0].text) or str(text[0].text) == '教育部' :
+            
                     break
                 if count > 30 :
                     if init_retry > 10 :
@@ -192,6 +190,8 @@ def re_sp_test(re_test_list):
                         init_retry = init_retry + 1
                         i = i - 1
                         continue
+                else:
+                    continue
                 time.sleep(1)
 
             #time.sleep(10)
@@ -200,7 +200,7 @@ def re_sp_test(re_test_list):
 
             select_server_btn.click()
             
-            value_ = '//div[@id="choices--server__select-item-choice-'+str(i)+'"]'
+            value_ = '//li[@data-item-value='+str(i)+']'
             #value_ = '//div[@data-value="5"]'
             select_server = driver.find_element(by = By.XPATH , value=value_)
             ActionChains(driver).move_to_element(select_server).click(select_server).perform()
@@ -208,21 +208,22 @@ def re_sp_test(re_test_list):
             #select_server.click()
             start_btn = driver.find_element(by = By.XPATH , value='//button[@id="btn-start"]')
             start_btn.click()
-            time.sleep(5)
+            time.sleep(10)
             #popup_txt = data.xpath('//div[@id="popup-info__text"]/text()')
             popup_txt = driver.find_element(by = By.XPATH , value='//div[@id="popup-info__text"]')
-            srever_ = data.xpath(value_+'/text()')
-
+            server_ = data.xpath(value_+"/div")
+     
+            #srever_ = data.xpath("//div[@data-value='1']/text()")
             
-            #print(popup_txt)          
-            print(srever_[0])
+            #print(popuv6p_txt)
+            print(server_[0].text)
             if popup_txt.text != '' :
                 
-                #print(srever_[0])
-                line_notify('測試失敗 ' +srever_[0]+' '+popup_txt.text) 
+                #print(server_[0])
+                line_notify('測試失敗 ' +server_[0].text+' '+popup_txt.text) 
                 continue
 
-            time.sleep(80)
+            time.sleep(75)
 
             #data = html.fromstring(driver.page_source)
             #v4_data = driver.find_element(by = By.XPATH , value='//span[@id="jit__value--ipv4"]')
@@ -242,43 +243,43 @@ def re_sp_test(re_test_list):
             try:
                 float(v4_ping.text)
             except:
-                line_notify(srever_[0]+'v4 ping 測試失敗  text = '+v4_ping.text)
+                line_notify(server_[0].text+'v4 ping 測試失敗  text = '+v4_ping.text)
                 continue
             try:
                 float(v4_jit.text)
             except:
-                line_notify(srever_[0]+'v4 jitter 測試失敗  text = '+v4_jit.text)
+                line_notify(server_[0].text+'v4 jitter 測試失敗  text = '+v4_jit.text)
                 continue
             try:
                 float(v4_down.text)
             except:
-                line_notify(srever_[0]+'v4 download 測試失敗  text = '+v4_down.text)
+                line_notify(server_[0].text+'v4 download 測試失敗  text = '+v4_down.text)
                 continue
             try:
                 float(v4_upl.text)
             except:
-                line_notify(srever_[0]+'v4 upload 測試失敗  text = '+v4_upl.text)
+                line_notify(server_[0].text+'v4 upload 測試失敗  text = '+v4_upl.text)
                 continue
             if v6_ping.text != '' :
                 try:
                     float(v6_ping.text)
                 except:
-                    line_notify(srever_[0]+'v6 ping 測試失敗  text = '+v6_ping.text)
+                    line_notify(server_[0].text+'v6 ping 測試失敗  text = '+v6_ping.text)
                     continue
                 try:
                     float(v6_jit.text)
                 except:
-                    line_notify(srever_[0]+'v6 jitter 測試失敗  text = '+v6_jit.text)
+                    line_notify(server_[0].text+'v6 jitter 測試失敗  text = '+v6_jit.text)
                     continue
                 try:
                     float(v6_down.text)
                 except:
-                    line_notify(srever_[0]+'v6 download 測試失敗  text = '+v6_down.text)
+                    line_notify(server_[0].text+'v6 download 測試失敗  text = '+v6_down.text)
                     continue
                 try:
                     float(v6_upl.text)
                 except:
-                    line_notify(srever_[0]+'v6 upload 測試失敗  text = '+v6_upl.text)
+                    line_notify(server_[0].text+'v6 upload 測試失敗  text = '+v6_upl.text)
                     continue
 
         except Exception as e :
@@ -295,7 +296,7 @@ def re_sp_test(re_test_list):
     driver.close()
 
 def line_notify(text): 
-
+    
     config_file = open(r'C:\config.json','r',encoding='utf-8')
     config_file = json.loads(config_file.read())
     token = config_file['token']
@@ -308,8 +309,8 @@ def line_notify(text):
     requests.post("https://notify-api.line.me/api/notify",headers=headers, params=params)
     
     #print('\n\n\n\n\n\nexception\n\n\n\n\n\n'+text)
- 
-
+    
+    #print(text)
 def test():
     '''
     driver = webdriver.Edge()
